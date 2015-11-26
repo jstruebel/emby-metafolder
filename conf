@@ -1,0 +1,20 @@
+#!/bin/bash -ex
+install()
+{
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get -y \
+        -o DPkg::Options::=--force-confdef \
+        -o DPkg::Options::=--force-confold \
+        install $@
+}
+
+METADATA=/srv/storage/Metadata
+
+# Add Metadata directory to embysetup
+CONF=/etc/embysetup
+sed -i "s|\"IsPortAuthorized\":true|\"IsPortAuthorized\":true,\"MedadataPath\":\"$METADATA\"|" $CONF
+
+# create Metadata directories
+mkdir -p $METADATA
+chown -R emby:users $METADATA
+chmod -R g+w $METADATA
