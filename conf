@@ -16,5 +16,8 @@ sed -i "s|\"IsPortAuthorized\":true|\"IsPortAuthorized\":true,\"MedadataPath\":\
 
 # create Metadata directories
 mkdir -p $METADATA
-chown -R emby:users $METADATA
 chmod -R g+w $METADATA
+
+CONF=/usr/lib/inithooks/firstboot.d/50emby-server
+sed -i "s|chown emby:users /srv/storage/Photos|chown emby:users /srv/storage/Photos\nchown emby:users $METADATA|" $CONF
+
